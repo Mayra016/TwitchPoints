@@ -7,6 +7,7 @@ class Auth():
     client_id = os.getenv("CLIENT_ID")
     client_secret = os.getenv("CLIENT_SECRET")
     TOKEN = ""
+    CHANNEL_ID = ""
 
     def __init__(self):
         self.client_id = os.getenv("CLIENT_ID")
@@ -41,3 +42,23 @@ class Auth():
             print(validation_response.text)
         else:
             print('Fehler bei der Anfrage. Statuscode:', validation_response.status_code)
+
+
+    def getChannelId(self, channel_name):
+        URL = "https://api.twitch.tv/helix/users?login=" + channel_name
+        header = {
+            "Authorization": "Bearer " + self.TOKEN,
+            "Client-Id": self.client_id
+        }
+
+        response = requests.get(URL, headers=header)
+        if response.status_code == 200:
+            response_JSON = response.json()
+            # Überprüfe, ob "data" im JSON-Objekt vorhanden ist
+            if "data" in response_JSON:
+                self.CHANNEL_ID = response_JSON["data"][0]["id"]
+                print(f"Kanal-ID für {channel_name}: {self.CHANNEL_ID}")
+            else:
+                print("Keine Daten gefunden.")
+        else:
+            print("Fehler bei der Anfrage:", response.status_code)

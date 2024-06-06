@@ -1,16 +1,17 @@
 import requests 
 import json 
+import os
 
 class API_requests():
+    client_id = os.getenv("CLIENT_ID")
 
-
-    def watch_events(self, TOKEN):
+    def watch_events(self, TOKEN, CHANNEL_ID):
         WATCH_URL = "wss://pubsub-edge.twitch.tv"
         payload = {
             "type": "LISTEN",
             "nonce": "44h1k13746815ab1r2",
             "data": {
-                "topics": ["channel-points-channel-v1.44322889"],
+                "topics": ["channel-points-channel-v1." + CHANNEL_ID],
                 "auth_token": "cfabdegwdoklmawdzdo98xt2fo512y"
             }
         }
