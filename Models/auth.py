@@ -66,7 +66,7 @@ class Auth():
                 print("Keine Daten gefunden.")
         else:
             print("Fehler bei der Anfrage:", response.status_code)
-
+    """
     def getUserToken(self):
         URL = "https://id.twitch.tv/oauth2/authorize"
         params = {
@@ -89,7 +89,7 @@ class Auth():
             'client_secret': self.client_secret,
             'code': authorization_code,
             'grant_type': 'authorization_code',
-            'redirect_uri': self.redirect_uri
+            'redirect_uri': "http://localhost:8080/auth"
         }
         response = requests.post(TOKEN_URL, data=data)
         token_data = response.json()
@@ -98,7 +98,7 @@ class Auth():
             print("Access Token:", token_data['access_token'])
         else:
             print("Fehler beim Abrufen des Tokens:", token_data)
-
+    """
 
     def getAuthChannel(self):
         header_info = {'Content-Type': 'application/json'}

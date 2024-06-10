@@ -3,6 +3,9 @@ import json
 import os
 import websocket
 
+from Services.ClickEventsService import ClickEventsService
+from Services.KeyboardEvents import KeyboardEventsService
+
 class API_requests():
     client_id = os.getenv("CLIENT_ID")
 
@@ -12,7 +15,24 @@ class API_requests():
         WATCH_URL = "wss://pubsub-edge.twitch.tv"
 
         def on_message(ws, message):
-            print(message)
+            print("Received message: " + message)
+            message_json = json.loads(message)
+
+            if message_json.get("type") == "MESSAGE":
+                data = message_json.get("data", {})
+                message_content = data.get("message")
+                print("Message Content:", message_content)
+
+                message_content_json = json.loads(message_content)
+                redemption = message_content_json.get("data", {}).get("redemption", {})
+                reward = redemption.get("reward", {})
+                reward_title = reward.get("title", "")
+                print("Reward Title:", reward_title)
+                if "click" in reward_title:
+                    click = ClickEventsService(reward_title)
+
+                if "press" in reward_title:
+                    press = KeyboardEventsService(reward_title)
 
         def on_error(ws, error):
             print(error)

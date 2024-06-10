@@ -1,6 +1,7 @@
 from Models.auth import Auth
 from Models.api_requests import API_requests
-# FALTA EL TOKEN DEL USUARIO PARA MANDARLO EN EL WATCH EVENTS
+
+info = "Token \n Access url: https://twitchapps.com/tokengen/  \n Required scopes: channel:read:redemptions"
 
 # APP AUTHENTICATION
 authentication = Auth()
@@ -10,11 +11,11 @@ authentication.validateToken()
 
 # USER AUTHENTICATION
 authentication.getAuthChannel()
-authentication.getUserToken()
 channelName = input("Insert your channel's name")
 authentication.getChannelId(channelName)
+print("Your channel id is: " + authentication.CHANNEL_ID)
+print(info)
+user_TOKEN = input("Paste your OAuth token: ")
 
 # LISTEN TO CHANNEL POINT EVENTS
-api.watch_events(authentication.USER_TOKEN, authentication.CHANNEL_ID)
-
-# HANDLE EVENTS
+api.watch_events(user_TOKEN, authentication.CHANNEL_ID)
